@@ -16,6 +16,13 @@ import fs from "fs";
 
 import "./App.css";
 
+//Sorry Danny was quite busy these days and couldn't refactor the code. This is just the basic of basic.
+//There are a few things I can do e.g. 
+// 1. adding loaders from lottie
+// 2. building functional components
+// 3. improve the layout further (format the numbers etc)
+// 4. Use Jslint
+// I will make some changes on Friday perhaps as I was quite busy these days with some other engagements. Cheers!
 export class App extends React.Component {
   constructor(props) {
     super(props);
@@ -39,6 +46,9 @@ export class App extends React.Component {
   }
   createSelectItems() {
     let items = [];
+    items.push(
+      <option hidden disabled selected value> -- select an option -- </option>
+    )
     for (let i = 0; i < this.state.countries.length; i++) {
       items.push(
         <option key={i} value={this.state.countries[i]["alpha-2"]}>
@@ -52,7 +62,6 @@ export class App extends React.Component {
   }
   matchCities() {
     var countryCode = this.state.selectedCountry;
-    console.log("s", this.state.selectedCountry);
     var availableCities = this.state.cities[countryCode];
     let items = [];
     for (let i = 0; i < availableCities.length; i++) {
@@ -72,7 +81,6 @@ export class App extends React.Component {
       .then(res => res.json())
       .then(
         result => {
-          console.log(result);
           this.setState({
             countries: result
           });
@@ -88,7 +96,6 @@ export class App extends React.Component {
       .then(res => res.json())
       .then(
         result => {
-          console.log(result);
           var cities = {};
           for (var i = 0; i < result.length; i++) {
             if (result[i]["country"] in cities) {
@@ -97,7 +104,6 @@ export class App extends React.Component {
               cities[result[i]["country"]] = [result[i]["name"]];
             }
           }
-          console.log(cities);
           this.setState({
             cities: cities
           });
@@ -117,7 +123,6 @@ export class App extends React.Component {
     });
   }
   handleCountry(event) {
-    console.log(event.target.key);
     this.setState({ selectedCountry: event.target.value });
   }
   handleCity(event) {
@@ -143,7 +148,6 @@ export class App extends React.Component {
       .then(res => res.json())
       .then(
         result => {
-          console.log(result);
           this.setState({
             currentWeather: result
           });
@@ -158,7 +162,6 @@ export class App extends React.Component {
       .then(res => res.json())
       .then(
         result => {
-          console.log(result);
           // rewrite this bit
           var forecast = {};
           for (var i = 0; i < result.list.length; i++) {
@@ -181,11 +184,7 @@ export class App extends React.Component {
   }
   forecastData() {
     const keys = Object.keys(this.state.forecastWeather);
-    console.log(this.state.forecastWeather);
     var forecastData = {};
-    keys.map((item, index) => {
-      console.log(item);
-    });
     for (var i = 0; i < keys.length; i++) {
       var date = keys[i].split(" ")[0];
       var time = keys[i].split(" ")[1];
@@ -195,7 +194,6 @@ export class App extends React.Component {
         forecastData[date] = [this.state.forecastWeather[keys[i]]];
       }
     }
-    console.log(forecastData);
     return Object.keys(forecastData).map((item, i) => (
       <div key={i}>
         <h2> {item} </h2>
@@ -273,7 +271,7 @@ export class App extends React.Component {
                     rounded
                   />
                 ) : (
-                  ""
+                  "None"
                 )}
                 {this.state.currentWeather ? (
                   <Card.Text>
